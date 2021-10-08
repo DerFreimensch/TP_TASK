@@ -3,5 +3,9 @@
 class check :
     public purshase
 {
+public:
+    void show();
+protected:
+    std::string pace(int num);
 };
 

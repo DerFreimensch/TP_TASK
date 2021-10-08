@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="check.cpp" />
+    <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="product.cpp" />
     <ClCompile Include="purshase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="check.h" />
+    <ClInclude Include="kart.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="purshase.h" />
   </ItemGroup>
