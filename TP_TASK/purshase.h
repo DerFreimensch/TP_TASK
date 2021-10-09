@@ -12,6 +12,9 @@ public:
 	int get_number();
 	int get_price_for_one();
 	int get_whole_price();
+	std::string pace(int num);
+	int fill_number(int A);
+	int fill_string(std::string A);
 private:
 	std::string name;
 	int number;

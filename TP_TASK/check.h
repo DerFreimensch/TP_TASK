@@ -5,7 +5,6 @@ class check :
 {
 public:
     void show();
-protected:
-    std::string pace(int num);
+    
 };
 
