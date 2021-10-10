@@ -14,6 +14,7 @@ int update_auto(std::string path);
 int update_manual();
 int save_to_file(std::string path);
 int shopping();
+int deleting();
 int show_my_kart();
 
 int main() {
@@ -23,7 +24,8 @@ int main() {
 		std::cout << "2) Update stuffs manual" << std::endl;
 		std::cout << "3) Start shopping" << std::endl;
 		std::cout << "4) Show my kart" << std::endl;
-		std::cout << "Other) Exit" << std::endl;
+		std::cout << "5) Clear console" << std::endl;
+		std::cout << "-1) Exit" << std::endl;
 		int choose = 0;
 		std::cin >> choose;
 		switch (choose)
@@ -51,11 +53,20 @@ int main() {
 		}
 		case 2:
 			if (update_manual() == 1) std::cout << "You print wrong option, be careful. You were trow out manual update menu" << std::endl;
+			std::cout << std::endl;
+			break;
 		case 3:
-
+			shopping();
+			std::cout << std::endl;
+			break;
 		case 4:
-
-		default:
+			show_my_kart();
+			std::cout << std::endl;
+			break;
+		case 5:
+			system("cls");
+			break;
+		case -1:
 			exit(1);
 		}
 	}
@@ -71,8 +82,12 @@ int update_manual() {
 		std::cout << "name: ";
 		std::cin >> new_staff.name;
 		std::cout << "price: ";
-		std::cin >> new_staff.price;
-		st.push_back(new_staff);
+		while (1) {
+			std::cin >> new_staff.price;
+			if (new_staff.price <= 0) continue;
+			st.push_back(new_staff);
+			break;
+		}
 		std::cout << "do you want continue?(Y/N)" << std::endl;
 		std::cin >> ch;
 		getchar();
@@ -92,6 +107,7 @@ int update_manual() {
 	return 0;
 }
 int update_auto(std::string path) {
+	st.clear();
 	std::ifstream config;
 	std::string line;
 	config.open(path);
@@ -106,7 +122,7 @@ int update_auto(std::string path) {
 		new_staff.price = atoi(line.substr(line.find(';') + 1, line.find_first_of(']') - 1 - line.find(';')).c_str());
 		if (new_staff.name.empty() == true || new_staff.price == 0) {
 			if (new_staff.name.empty() == true) return 1;
-			else if (new_staff.price == 0) return 2;
+			else if (new_staff.price <= 0) return 2;
 		}
 		else {
 			st.push_back(new_staff);
@@ -124,6 +140,58 @@ int save_to_file(std::string path) {
 	return 0;
 }
 int shopping() {
-
+	std::cout << "If you want to quit, print in staff: \"-50\"" << std::endl;
+	std::cout << "If you want to delete staff, print in staff: \"-100\"" << std::endl;
+	while (1) {
+		int count = 0;
+		int choose = 0;
+		int c;
+		std::cout << "Which staff want you buy (print number of staff): " <<std::endl << std::endl ;
+		for (auto const& stuffs : st) {
+			std::cout << ++count << ") " << stuffs.name << " price : " << stuffs.price << std::endl;
+		}
+		std::cin >> choose;
+		if (choose == -50) {
+			break;
+		}
+		else if (choose == -100) {
+			deleting();
+			return 0;
+		}
+		else if (choose > st.size()) {
+			std::cout << "wrong option, try again" << std::endl;
+			continue;
+		}
+		std::cout << "print number of stuffs: ";
+		std::cin >> c;
+		purshase new_purshase(*std::next(st.begin(), choose-1), c);
+		user_kart.add_pur(new_purshase);
+	}
+	return 0;
+}
+int deleting() {
+	std::cout << "If you want to quit, print in staff: \"-50\"" << std::endl;
+	while (1) {
+		int count = 0;
+		int choose = 0;
+		int c;
+		std::cout << "Which staff want you delete (print number of staff): " << std::endl << std::endl;
+		for (auto & uk :user_kart.get_kart()) {
+			std::cout << ++count << ") " << uk.get_name() << std::endl;
+		}
+		std::cin >> choose;
+		if (choose == -50) {
+			break;
+		}
+		else if (choose > st.size()) {
+			std::cout << "wrong option, try again" << std::endl;
+			continue;
+		}
+		user_kart.del_pur(choose);
+	}
+	return 0;
+}
+int show_my_kart() {
+	user_kart.show();
 	return 0;
 }
